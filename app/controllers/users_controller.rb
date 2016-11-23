@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user , only: [:show,:edit, :update]
+  #before_action :set_user , only: [:show,:edit, :update]
   before_action :correct_user, only: [:edit, :update]
   
   
@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @messages = Users.all
   end
   def show
+     @user = User.find(params[:id])
      @microposts = @user.microposts.order(created_at: :desc)
   end
   
@@ -27,15 +28,26 @@ class UsersController < ApplicationController
   end
   
   def edit
+     @user = User.find(params[:id])
   end
   
   def update
+    @user = User.find(params[:id])
     if @user.update(user_params)
-      
-      redirect_to root_path , notice: 'プロフィールを編集しました'
+      redirect_to user_path(@user) , notice: 'プロフィールを編集しました'
     else
       render 'edit'
     end
+  end
+  
+  def followings
+    @user = User.find(params[:id])
+    @users = @user.following_users
+  end
+  
+  def followers
+    @user = User.find(params[:id])
+    @users = @user.follower_users
   end
   
   private
@@ -49,6 +61,7 @@ class UsersController < ApplicationController
   end
   
   def correct_user
+    @user = User.find(params[:id])
     if current_user != @user
         redirect_to root_url
     end
