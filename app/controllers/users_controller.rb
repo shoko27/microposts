@@ -3,15 +3,11 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
   
   
-  def index
-    @user = User.new
-    # Messageを全て取得する。
-    @messages = Users.all
-  end
   def show
      @user = User.find(params[:id])
-     @microposts = @user.microposts.order(created_at: :desc)
-  end
+     @microposts = @user.microposts.order(created_at: :desc).page(params[:page]).per(5)    
+  end  
+
   
   def new
     @user = User.new

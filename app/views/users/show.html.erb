@@ -25,6 +25,10 @@
       <ol class="microposts">
         <%= render @microposts %>
       </ol>
+      
+   <%#= pagenate @microposts %>
+   <%= paginate @microposts %>
+      
     <% end %>
   </div>
 </div>
